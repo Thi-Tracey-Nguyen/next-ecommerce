@@ -8,6 +8,12 @@ import shoppingBag from '@/public/shopping-bag.png'
 
 export default function Cart() {
   const cartStore = useCartStore()
+
+  //total proce
+  const totalPrice = cartStore.cart.reduce((total, item) => {
+    return total + item.unit_amount! * item.quantity!
+  }, 0)
+
   return (
     <div 
       onClick={() => cartStore.toggleCart()} 
@@ -63,8 +69,12 @@ export default function Cart() {
             </div>
           </div>
         ))}
+        {/* check out and total */}
         {cartStore.cart.length > 0 && (
-          <button className='py-2 mt-4 bg-teal-700 w-full rounded-md text-white'>Checkout</button>
+          <div>
+            <p>Total: {formatPrice(totalPrice)}</p>
+            <button className='py-2 mt-4 bg-teal-700 w-full rounded-md text-white'>Checkout</button>
+          </div>
         )}
         {!cartStore.cart.length && (
           <div className='flex flex-col items-center gap-6 text-xl font-medium pt-28 opacity-75'>
