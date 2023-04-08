@@ -3,6 +3,7 @@
 import Image from "next/image"
 import { useCartStore } from '@/store'
 import formatPrice from "@/util/PriceFormat"
+import {IoAddCircle, IoRemoveCircle} from 'react-icons/io5'
 
 export default function Cart() {
   const cartStore = useCartStore()
@@ -15,7 +16,7 @@ export default function Cart() {
         className='bg-white absolute right-0 top-0 w-1/4 h-screen p-12 overflow-scroll text-gray-700'
         onClick={(e) => e.stopPropagation()}
       >
-        <h1>This is your shopping list 📝</h1>
+        <h1>This is your shopping cart 📝</h1>
         {cartStore.cart.map(item => (
           <div className='flex py-4 gap-4'>
             <Image 
@@ -27,8 +28,37 @@ export default function Cart() {
             />
             <div className='text-sm h-24 w-36'>
               <h2>{item.name}</h2>
-              <h2>Quantity: {item.quantity}</h2>
-              <p>{item.unit_amount && formatPrice(item.unit_amount)}</p>
+              {/* display quantity and buttons to update quantity */}
+              <div className='flex gap-2'>
+                <h2>Quantity: {item.quantity}</h2>
+                <button
+                  onClick={() => 
+                    cartStore.removeProduct({
+                      id: item.id, 
+                      image: item.image, 
+                      name: item.name,
+                      unit_amount: item.unit_amount, 
+                      quantity: item.quantity, 
+                    })}
+                >
+                  <IoRemoveCircle />
+                </button>
+                <button 
+                  onClick={() => 
+                    cartStore.addProduct({
+                      id: item.id, 
+                      image: item.image, 
+                      name: item.name,
+                      unit_amount: item.unit_amount, 
+                      quantity: item.quantity, 
+                    })}
+                >
+                  <IoAddCircle />
+                </button>
+              </div>
+              <p>
+                {item.unit_amount && formatPrice(item.unit_amount)}
+              </p>
             </div>
           </div>
         ))}
