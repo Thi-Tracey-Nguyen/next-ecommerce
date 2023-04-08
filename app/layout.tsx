@@ -3,6 +3,20 @@ import './globals.css'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/pages/api/auth/[...nextauth]'
 import Hydrate from './components/Hydrate'
+import { Roboto, Lobster_Two } from 'next/font/google'
+
+//define main fonts
+const roboto = Roboto({
+  weight: ['400', '500', '700'],
+  subsets: ['latin'],
+  variable: '--font-robot',
+})
+
+const lobster = Lobster_Two({
+  weight:  '700',
+  subsets: ['latin'],
+  variable: '--font-lobster',
+})
 
 export const metadata = {
   title: 'Next Store',
@@ -20,7 +34,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className='mx-32'>
+      <body className={`mx-32 ${roboto.className}`}>
         <Hydrate>
           <Nav user={session?.user} expires={session?.expires as string}/>
           {children}
