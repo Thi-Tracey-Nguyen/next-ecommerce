@@ -34,12 +34,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     amount: calculateOrderAmount(items), 
     currency: 'AUD',
     status: 'pending', 
-    paymentIntentId: payment_intent_id,
+    paymentIntentID: payment_intent_id, 
     products: {
       create: items.map((item) => ({
         name: item.name,
-        description: item.description, 
-        unit_amount: item.unit_amount,
+        description: item.description || null, 
+        unit_amount: parseFloat(item.unit_amount),
         quantity: item.quantity, 
         image: item.image
       }))
@@ -74,8 +74,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             deleteMany: {},
             create: items.map(item => ({
               name: item.name,
-              description: item.description, 
-              unit_amount: item.unit_amount,
+              description: item.description || null, 
+              unit_amount: parseFloat(item.unit_amount),
               quantity: item.quantity, 
               image: item.image
             }))
@@ -92,14 +92,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       currency: 'AUD',
       automatic_payment_methods: { enabled: true }
     })
-    orderData.paymentIntentId = paymentIntent.id
+    orderData.paymentIntentID = paymentIntent.id
 
     // create a new prisma order
     const newOrder = await prisma.order.create({
       data: orderData
     })
+    res.status(200).json({ paymentIntent })
   }
-
-  res.status(200).json({ payment_intent_id })
-  return 
 } 

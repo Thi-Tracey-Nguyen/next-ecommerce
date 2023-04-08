@@ -17,7 +17,7 @@ export default function Checkout() {
 
   useEffect(() => {
     //create a payment intent as soon as the element loads up
-    fetch('api/create-payment-intent', { 
+    fetch('/api/create-payment-intent', { 
       method: 'POST', 
       headers: {'Content-Type': 'application/json'}, 
       body: JSON.stringify({
@@ -29,10 +29,11 @@ export default function Checkout() {
       if (res.status === 403) {
         return router.push('/api/auth/signin')
       }
-      return res.json()
+      return res.json() 
     })
     .then((data) => {
-      console.log(data)
+      setClientSecret(data.paymentIntent.client_secret)
+      cartStore.setPaymentIntent(data.paymentIntent.id)
     })
   }, [])
 
