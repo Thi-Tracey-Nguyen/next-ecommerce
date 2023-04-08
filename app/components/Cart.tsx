@@ -4,6 +4,7 @@ import Image from "next/image"
 import { useCartStore } from '@/store'
 import formatPrice from "@/util/PriceFormat"
 import {IoAddCircle, IoRemoveCircle} from 'react-icons/io5'
+import shoppingBag from '@/public/shopping-bag.png'
 
 export default function Cart() {
   const cartStore = useCartStore()
@@ -62,8 +63,16 @@ export default function Cart() {
             </div>
           </div>
         ))}
-        <button className='py-2 mt-4 bg-teal-700 w-full rounded-md text-white'>Checkout</button>
-      </div>
+        {cartStore.cart.length > 0 && (
+          <button className='py-2 mt-4 bg-teal-700 w-full rounded-md text-white'>Checkout</button>
+        )}
+        {!cartStore.cart.length && (
+          <div className='flex flex-col items-center gap-6 text-xl font-medium pt-28 opacity-75'>
+            <h1>Uh ohh... It is empty 🥲</h1>
+            <Image src={shoppingBag} alt='empty cart' width={200} height={200} />
+          </div>
+        )}
+      </div> 
     </div>
   )
 } 
