@@ -46,6 +46,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
   }
 
+
   //check if the payment intent exists just update the order with new amount
   if (payment_intent_id) {
     const current_intent = await stripe.paymentIntents.retrieve(payment_intent_id)
@@ -71,16 +72,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         data: {
           amount: calculateOrderAmount(items),
           products: {
-            deleteMany: {},
-            create: items.map(item => ({
+            deleteMany: {}, 
+            create: items.map((item) => ({
               name: item.name,
               description: item.description || null, 
               unit_amount: parseFloat(item.unit_amount),
               quantity: item.quantity, 
               image: item.image
-            }))
-          }
-        }
+            })),
+          },
+        },
       })
       res.status(200).json({ paymentIntent: updated_intent })
       return 
@@ -90,7 +91,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const paymentIntent = await stripe.paymentIntents.create({
       amount: calculateOrderAmount(items), 
       currency: 'AUD',
-      automatic_payment_methods: { enabled: true }
+      automatic_payment_methods: { enabled: true }, 
     })
     orderData.paymentIntentID = paymentIntent.id
 
