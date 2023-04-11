@@ -6,6 +6,7 @@ import { Elements } from '@stripe/react-stripe-js'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import CheckoutForm from './CheckoutForm'
+import OrderAnimation from './OrderAnimation'
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
@@ -48,13 +49,14 @@ export default function Checkout() {
 
   return (
     <div>
-      {clientSecret && (
+      {clientSecret ? (
         <div>
           <Elements options={ stripeOptions } stripe={ stripePromise }>
             <CheckoutForm clientSecret={ clientSecret }/>
           </Elements>
         </div>
-      )}
+      ) 
+      : <OrderAnimation />}
     </div>
   )
 }
