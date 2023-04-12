@@ -16,7 +16,12 @@ export default function Hydrate({children}: {children: ReactNode}) {
   return (
     <>
       {isHydrated ? 
-        <body className='px-4 md:px-40' data-theme={ themeStore.mode }>{children}</body> 
+        <body 
+          className='px-4 md:px-40 font-roboto' 
+          data-theme={ themeStore.mode }
+        > 
+          {children}
+        </body> 
         : <body></body>}
     </>
   )

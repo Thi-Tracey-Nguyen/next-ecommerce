@@ -11,6 +11,10 @@ module.exports = {
         fluid: 'repeat(auto-fit, minmax(15rem, 1fr))'
       }
     },
+    fontFamily: {
+      lobster: ['var(--font-lobster)'],
+      roboto: ['var(--font-roboto)'],
+    }
   },
   plugins: [require("daisyui")],
   daisyui: {
